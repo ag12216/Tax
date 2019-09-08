@@ -5,6 +5,7 @@
  */
 package Logic_Files;
 
+import Common_Files.EnglishNumberToWords;
 import Common_Files.cfg;
 import DesignUI.DesignUI;
 import java.awt.Color;
@@ -40,16 +41,16 @@ import javax.swing.text.PlainDocument;
  * @author Dell
  */
 public class First_Page extends JFrame implements ItemListener {
-
+    
     private static String companyName;
     private static JLabel lblTitle;
     private static JLabel lblCompanyName;
     private static JLabel lblAddress;
     private static JLabel lblGSTIN;
     private static JLabel lblState;
-
+    
     private static String chargesArr[];
-
+    
     private static cfg objc = new cfg();
     private static JComboBox c1;
     private static JTable chargesTbl;
@@ -66,9 +67,9 @@ public class First_Page extends JFrame implements ItemListener {
 //    static JComboBox charges;
 
     public static void main(String args[]) {
-
+        
         DesignUI obj = new DesignUI();
-        Map<String,String> customerDict = new HashMap<>();
+        Map<String, String> customerDict = new HashMap<>();
         
         DocumentFilter filter = new DocumentFilter();
         modelSearch = new DefaultTableModel();
@@ -76,9 +77,9 @@ public class First_Page extends JFrame implements ItemListener {
         selectedModel = new ArrayList<>();
         tempmodelSearch = new DefaultTableModel();
         companyName = "Ashirwad Shipping & Logistics Pvt Ltd";
-
+        
         First_Page fObj = new First_Page();
-
+        
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;databaseName=Tax Invoice;user=batch_admin;password=admin";
@@ -97,71 +98,71 @@ public class First_Page extends JFrame implements ItemListener {
         } catch (Exception e) {
             System.out.println("Error = " + e.getMessage());
         }
-
+        
         JFrame topFrame = new JFrame("Tax Invoice2");
         topFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         SpringLayout sLayout = new SpringLayout();
         JPanel cont = new JPanel(sLayout);
-
+        
         JScrollPane scroll = new JScrollPane(cont, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         topFrame.add(scroll);
-
+        
         cont.setPreferredSize(new Dimension(1000, 1500));
-
+        
         lblTitle = obj.makeLabel(lblTitle, "Tax Invoice");
-
+        
         lblTitle.setFont(new Font(lblTitle.getName(), Font.BOLD, 20));
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblTitle, JLabel.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblTitle, 30, SpringLayout.NORTH, cont);
-
+        
         ImageIcon iconLogo = new ImageIcon(First_Page.class.getResource("/Images/logo.png"));
         JLabel lblimg = new JLabel();
         lblimg.setIcon(iconLogo);
         sLayout.putConstraint(SpringLayout.NORTH, lblimg, 10, SpringLayout.NORTH, cont);
-
+        
         lblCompanyName = obj.makeLabel(lblCompanyName, companyName);
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblCompanyName, JLabel.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblCompanyName, 20, SpringLayout.SOUTH, lblTitle);
         lblCompanyName.setFont(new Font(lblCompanyName.getName(), Font.BOLD, 20));
-
+        
         lblAddress = obj.makeLabel(lblAddress, "2A/108, Apna Ghar, Saibaba Nagar, Teli Gali Andheri (East), Mumbai");
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblAddress, JLabel.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblAddress, 10, SpringLayout.SOUTH, lblCompanyName);
         lblAddress.setFont(new Font(lblAddress.getName(), Font.BOLD, 12));
-
+        
         lblGSTIN = obj.makeLabel(lblGSTIN, "GSTIN/UIN: 27AAJCA8966F2Z7");
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblGSTIN, JLabel.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblGSTIN, 8, SpringLayout.SOUTH, lblAddress);
         lblGSTIN.setFont(new Font(lblGSTIN.getName(), Font.BOLD, 14));
-
+        
         lblState = obj.makeLabel(lblState, "State Name : Maharashtra, Code : 27 , E-Mail : info@ashirwadshipping.com");
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblState, JLabel.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblState, 8, SpringLayout.SOUTH, lblGSTIN);
         lblState.setFont(new Font(lblState.getName(), Font.BOLD, 12));
-
+        
         sLayout.putConstraint(SpringLayout.EAST, lblimg, -20, SpringLayout.WEST, lblState);
 //Customer's Details
         JLabel lblCustName = new JLabel("Enter the Customer Name : ");
         sLayout.putConstraint(SpringLayout.WEST, lblCustName, 30, SpringLayout.WEST, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblCustName, 30, SpringLayout.SOUTH, lblState);
-
+        
         JTextField txtCustName = new JTextField();
         sLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtCustName, JTextField.CENTER, SpringLayout.VERTICAL_CENTER, lblCustName);
         sLayout.putConstraint(SpringLayout.WEST, txtCustName, 36, SpringLayout.EAST, lblCustName);
         txtCustName.setPreferredSize(new Dimension(500, 30));
-
+        
         JLabel lblCustAddress = new JLabel("Enter the Customer Address : ");
         sLayout.putConstraint(SpringLayout.WEST, lblCustAddress, 30, SpringLayout.WEST, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblCustAddress, 30, SpringLayout.SOUTH, txtCustName);
-
+        
         JTextArea txtAddress = new JTextArea();
-
+        
         JScrollPane txtScroll = new JScrollPane(txtAddress, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sLayout.putConstraint(SpringLayout.WEST, txtScroll, 20, SpringLayout.EAST, lblCustAddress);
         sLayout.putConstraint(SpringLayout.NORTH, txtScroll, 30, SpringLayout.SOUTH, lblCustName);
-
+        
         txtScroll.setPreferredSize(new Dimension(500, 50));
-
+        
         String intArray[][] = {{"<html><b>INVOICE NO</b></html>",
             "<html><b>ISSUE DATE</b></html>", "<html><b>SHIPPER NAME</b></html>", "<html><b>CARGO TYPE</b></html>"},
         {"220/19/20", "1-JUN-2019", "MR. SHUBHAM GUPTA", "AIR SHIPMENT"},
@@ -171,9 +172,9 @@ public class First_Page extends JFrame implements ItemListener {
         {"071-34335140 DT 22.05.19", "LAGOS", "4346690 DT 22.05.19", "21 CTNS /302.00 KGS"},
         {"<html><b>AIRLINE NAME</b></html>", "<html><b>FREIGHT TERM</b></html>", "", ""}, {"SAHAR AIR CARGO", "PREPAID", "", ""}
         };
-
+        
         String column[] = {"Invoice No", "Dated", "Delivery Note", "Mode/Terms of Payment"};
-
+        
         JTable userInput = new JTable(intArray, column) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -183,7 +184,7 @@ public class First_Page extends JFrame implements ItemListener {
                 } else {
                     return true;
                 }
-
+                
             }
         };
         sLayout.putConstraint(SpringLayout.WEST, userInput, 30, SpringLayout.WEST, cont);
@@ -195,33 +196,33 @@ public class First_Page extends JFrame implements ItemListener {
         userInput.getTableHeader().setReorderingAllowed(false);
         MatteBorder border2 = new MatteBorder(1, 1, 1, 1, Color.black);
         userInput.setBorder(border2);
-
+        
         JLabel lblCargoType = new JLabel("Select the Cargo Type: ");
         sLayout.putConstraint(SpringLayout.WEST, lblCargoType, 30, SpringLayout.WEST, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblCargoType, 50, SpringLayout.SOUTH, userInput);
-
+        
         c1 = new JComboBox(cfg.cargoType);
         sLayout.putConstraint(SpringLayout.WEST, c1, 8, SpringLayout.EAST, lblCargoType);
         sLayout.putConstraint(SpringLayout.VERTICAL_CENTER, c1, 0, SpringLayout.VERTICAL_CENTER, lblCargoType);
         c1.addItemListener(fObj);
-
+        
         JLabel lblCharges = new JLabel("Select the charges: ");
         sLayout.putConstraint(SpringLayout.WEST, lblCharges, 30, SpringLayout.WEST, cont);
         sLayout.putConstraint(SpringLayout.NORTH, lblCharges, 30, SpringLayout.SOUTH, lblCargoType);
-
+        
         objc.makeDictionary();
-
+        
         JLabel lblChargesName = new JLabel("Search Charges");
         sLayout.putConstraint(SpringLayout.NORTH, lblChargesName, 30, SpringLayout.SOUTH, lblCharges);
         sLayout.putConstraint(SpringLayout.WEST, lblChargesName, 30, SpringLayout.WEST, cont);
-
+        
         JTextField txtSearch = new JTextField();
         sLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txtSearch, JTextField.CENTER, SpringLayout.VERTICAL_CENTER, lblChargesName);
         sLayout.putConstraint(SpringLayout.WEST, txtSearch, 20, SpringLayout.EAST, lblChargesName);
         txtSearch.setPreferredSize(new Dimension(500, 30));
         UpperCaseDocument ucd = new UpperCaseDocument();
         txtSearch.setDocument(ucd);
-
+        
         txtSearch.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 char letter = Character.toUpperCase(e.getKeyChar());
@@ -229,14 +230,14 @@ public class First_Page extends JFrame implements ItemListener {
 //                if (txtSearch.getText().length() >= 1) {
                 try {
                     String sqlcmd = "";
-                  
+                    
                     if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE || e.getKeyChar() == KeyEvent.VK_DELETE) {
                         sqlcmd = "select * from cargo_charges_Tbl;";
                     } else {
                         sqlcmd = "select * from cargo_charges_Tbl where [Charges Name] LIKE '" + txtSearch.getText().toUpperCase() + letter + "%';";
                     }
-                    
-                    // System.out.println(""+sqlcmd);
+
+                    //System.out.println(""+sqlcmd);
                     java.sql.Statement st = conn.createStatement();
                     java.sql.ResultSet rs = st.executeQuery(sqlcmd);
                     chargesName = new ArrayList<>();
@@ -247,7 +248,7 @@ public class First_Page extends JFrame implements ItemListener {
                         int i = rs.getInt("Index");
                         chargesName.add(str);
                         Object chargeRow[] = new Object[3];
-                        if(selectedModel.contains(String.valueOf(i))) {
+                        if (selectedModel.contains(String.valueOf(i))) {
                             chargeRow[0] = true;
                         } else {
                             chargeRow[0] = false;
@@ -255,9 +256,9 @@ public class First_Page extends JFrame implements ItemListener {
                         chargeRow[1] = i;
                         chargeRow[2] = str;
                         tempmodelSearch.addRow(chargeRow);
-
+                        
                     }
-
+                    
                     if (!chargesName.isEmpty()) {
                         searchBox.setModel(tempmodelSearch);
                         searchBox.repaint();
@@ -269,12 +270,13 @@ public class First_Page extends JFrame implements ItemListener {
                     searchTblWidth.getColumn(0).setPreferredWidth(30);
                     searchTblWidth.getColumn(1).setPreferredWidth(30);
                     searchTblWidth.getColumn(2).setPreferredWidth(800);
-
+                    
                     tempmodelSearch.addTableModelListener(new TableModelListener() {
                         @Override
                         public void tableChanged(TableModelEvent e) {
+                            System.out.println("select"+selectedModel);
                             for (int i = 0; i < searchBox.getModel().getRowCount(); i++) {
-
+                                
                                 if ((Boolean) (searchBox.getModel().getValueAt(i, 0))) {
                                     int row = searchBox.getSelectedRow();
                                     String str = String.valueOf(searchBox.getModel().getValueAt(row, 1));
@@ -287,7 +289,9 @@ public class First_Page extends JFrame implements ItemListener {
 //                                    System.out.println(""+selectedModel);
                                     break;
                                 } else {
-                                    String str = String.valueOf(searchBox.getSelectedRow() + 1);
+                                    int row = searchBox.getSelectedRow();
+                                    String str = String.valueOf(searchBox.getModel().getValueAt(row, 1));
+//                                    String str = String.valueOf(searchBox.getSelectedRow() + 1);
                                     if (selectedModel.contains(str)) {
                                         selectedModel.remove(str);
                                         break;
@@ -301,25 +305,9 @@ public class First_Page extends JFrame implements ItemListener {
                 } catch (SQLException ex) {
                     Logger.getLogger(First_Page.class.getName()).log(Level.SEVERE, null, ex);
                 }
-//                }
-//                else{
-//                
-//                }
-
             }
-
         });
 
-//        chargesArr = objc.cargoDic.get(c1.getSelectedItem());
-//        model = new DefaultTableModel();
-//        model.setColumnIdentifiers(new Object[]{"Select", "Sr No", "Name"});
-//        row = new Object[chargesArr.length];
-//        for (int i = 0; i < chargesArr.length; i++) {
-//            row[0] = false;
-//            row[1] = i + 1;
-//            row[2] = chargesArr[i];
-//            model.addRow(row);
-//        }
         for (int i = 0; i < chargeName.size(); i++) {
             Object chargeRow[] = new Object[3];
             if (selectedModel.contains(String.valueOf(i))) {
@@ -343,7 +331,7 @@ public class First_Page extends JFrame implements ItemListener {
                     return false;
                 }
             }
-
+            
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -356,14 +344,14 @@ public class First_Page extends JFrame implements ItemListener {
                 }
             }
         };
-
+        
         searchBox.setModel(modelSearch);
-
+        
         modelSearch.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 for (int i = 0; i < searchBox.getModel().getRowCount(); i++) {
-
+                    
                     if ((Boolean) (searchBox.getModel().getValueAt(i, 0))) {
                         String str = String.valueOf(searchBox.getSelectedRow() + 1);
                         if (selectedModel.contains(str)) {
@@ -383,7 +371,7 @@ public class First_Page extends JFrame implements ItemListener {
                 }
             }
         });
-
+        
         JScrollPane searchScroll = new JScrollPane();
         sLayout.putConstraint(SpringLayout.WEST, searchScroll, 20, SpringLayout.WEST, cont);
         sLayout.putConstraint(SpringLayout.EAST, searchScroll, -20, SpringLayout.EAST, cont);
@@ -393,115 +381,80 @@ public class First_Page extends JFrame implements ItemListener {
         searchScroll.setBorder(BorderFactory.createEmptyBorder());
         searchScroll.setViewportView(searchBox);
         searchBox.setRowHeight(30);
-
+        
         MatteBorder sborder = new MatteBorder(0, 1, 0, 0, Color.black);
         searchBox.setBorder(sborder);
         searchBox.getTableHeader().setReorderingAllowed(false);
         searchBox.setFocusable(false);
-
+        
         TableColumnModel searchTblWidth = searchBox.getColumnModel();
         searchTblWidth.getColumn(0).setPreferredWidth(30);
         searchTblWidth.getColumn(1).setPreferredWidth(30);
         searchTblWidth.getColumn(2).setPreferredWidth(800);
-
+        
         JButton btnSubmit = new JButton("Submit");
         sLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnSubmit, JButton.CENTER, SpringLayout.HORIZONTAL_CENTER, cont);
         sLayout.putConstraint(SpringLayout.NORTH, btnSubmit, 20, SpringLayout.SOUTH, searchScroll);
-        btnSubmit.setPreferredSize(new Dimension(100,30));
-        
+        btnSubmit.setPreferredSize(new Dimension(100, 30));
         
         btnSubmit.addActionListener((ActionEvent e1) -> {
-            ArrayList<String> finalData = new ArrayList<>();
-            for(int i = 0;i<selectedModel.size();i++){
-                int row = Integer.parseInt(selectedModel.get(i));
-                String str = (String) modelSearch.getValueAt(row - 1, 2);
-                finalData.add(str);
+            String custName = txtCustName.getText();
+            String custAddress = txtAddress.getText();
+            if ("".equals(custName.replace(" ", ""))) {
+                JOptionPane.showMessageDialog(fObj, "Alert enter the name");
+            } else if ("".equals(custAddress.replace(" ", ""))) {
+                JOptionPane.showMessageDialog(fObj, "Alert enter the Customer Address");
+            } 
+            else if (selectedModel.isEmpty()){
+                JOptionPane.showMessageDialog(fObj, "Please select the charges");
             }
-            Collections.sort(finalData);
-            customerDict.put(cfg.custName, txtCustName.getText());
-            customerDict.put(cfg.custAddress, txtAddress.getText());
-            customerDict.put(cfg.cargoTypes, c1.getName());
-            
-            TableModel userData = new DefaultTableModel();
-            userData = userInput.getModel();
-            int arr[] = {1,3,5,7};
-            for(int val : arr){
-                for(int j = 0;j<4;j++){
-                    System.out.println("j = "+userData.getValueAt(val, j));
+            else {
+                ArrayList<String> finalData = new ArrayList<>();
+                for (int i = 0; i < selectedModel.size(); i++) {
+                    int row = Integer.parseInt(selectedModel.get(i));
+                    String str = (String) modelSearch.getValueAt(row - 1, 2);
+                    finalData.add(str);
                 }
-            }
-            System.out.println("Table user = "+userData);
-            
-            if(Design_Frame.objInstance == null){ //for single instance
-                Design_Frame objClass = new Design_Frame();
-            }
-        
-//            topFrame.setVisible(false);
+                Collections.sort(finalData);// Selected charges
+                customerDict.put(cfg.custName, txtCustName.getText());
+                customerDict.put(cfg.custAddress, txtAddress.getText());
+                customerDict.put(cfg.cargoTypes, c1.getName());
+                
+                TableModel userData = new DefaultTableModel();
+                userData = userInput.getModel();
+                int arr[] = {1, 3, 5, 7};
+                
+                String userDef[][] = new String[16][4];
+                userDef[0][0] = cfg.inVoice;
+                userDef[0][1] = cfg.issueDate;
+                userDef[0][2] = cfg.shipperName;
+                userDef[0][3] = cfg.cargoTbl;
+                userDef[1][0] = cfg.partyInvoiceNo;
+                userDef[1][1] = cfg.vesselVoy;
+                userDef[1][2] = cfg.eid;
+                userDef[1][3] = cfg.pol;
+                userDef[2][0] = cfg.awbNumber;
+                userDef[2][1] = cfg.podNo;
+                userDef[2][2] = cfg.sbNo;
+                userDef[2][3] = cfg.noOFCTNS;
+                userDef[3][0] = cfg.name;
+                userDef[3][1] = cfg.term;
+                
+                for (int i = 0; i < arr.length; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        customerDict.put(userDef[i][j], userData.getValueAt(arr[i], j).toString());
+                    }
+                }
+                
+                if (Design_Frame.objInstance == null) { //for single instance
+                    Design_Frame objClass = new Design_Frame(customerDict,finalData);
+                }
 
-        });
-//        chargesTbl = new JTable() {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                return column == 0;
-//            }
-//            
-//            @Override
-//            public Class getColumnClass(int column) {
-//                switch (column) {
-//                    case 0:
-//                        return Boolean.class;
-//                    case 1:
-//                        return String.class;
-//                    default:
-//                        return String.class;
-//                }
-//            }
-//            
-//        };
-//        
-//        model.addTableModelListener(new TableModelListener() {
-//            @Override
-//            public void tableChanged(TableModelEvent e) {
-//                for (int i = 0; i < chargesTbl.getModel().getRowCount(); i++) {
-//                    if ((Boolean) chargesTbl.getModel().getValueAt(i, 0)) {
-////                        System.out.println("" + chargesTbl.getSelectedRow());
-////                        System.out.println("" + chargesTbl.getModel());
-//                        break;
-//                    }
-//                }
-//            }
-//            
-//        });
-//        
-//        JScrollPane scrollTbl = new JScrollPane();
-//        
-//        sLayout.putConstraint(SpringLayout.WEST, scrollTbl, 20, SpringLayout.WEST, cont);
-//        sLayout.putConstraint(SpringLayout.EAST, scrollTbl, -20, SpringLayout.EAST, cont);
-//        sLayout.putConstraint(SpringLayout.NORTH, scrollTbl, 20, SpringLayout.SOUTH, searchScroll);
-//        scrollTbl.setPreferredSize(new Dimension(0, 300));//(chargesArr.length + 1) * 30)
-//        chargesTbl.setModel(model);
-//        chargesTbl.setCellSelectionEnabled(false);
-//        scrollTbl.setBorder(BorderFactory.createEmptyBorder());
-//        scrollTbl.setViewportView(chargesTbl);
-//        
-//        MatteBorder border = new MatteBorder(0, 1, 0, 0, Color.black);
-//        chargesTbl.setBorder(border);
-//        
-//        TableColumnModel tblCol = chargesTbl.getColumnModel();
-//        tblCol.getColumn(0).setPreferredWidth(30);
-//        tblCol.getColumn(1).setPreferredWidth(30);
-//        tblCol.getColumn(2).setPreferredWidth(800);
-//        chargesTbl.getTableHeader().setReorderingAllowed(false);
-//        chargesTbl.setFocusable(false);
-//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//        for (int i = 0; i < model.getColumnCount(); i++) {
-//            if (i == 1) {
-//                chargesTbl.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-//            }
-//            
-//        }
-//        chargesTbl.setRowHeight(30);
+//            topFrame.setVisible(false);
+            }
+        }
+        );
+
         cont.add(lblTitle);
         cont.add(lblimg);
         cont.add(lblCompanyName);
@@ -521,12 +474,12 @@ public class First_Page extends JFrame implements ItemListener {
         cont.add(userInput);
         cont.add(searchScroll);
         cont.add(btnSubmit);
-
+        
         topFrame.pack();
         topFrame.setVisible(true);
-
+        
     }
-
+    
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == c1) {
@@ -536,22 +489,20 @@ public class First_Page extends JFrame implements ItemListener {
 //            for(String val : chargesArr){
 //                   charges.addItem(val);
 //            }
-
 //            model = new DefaultTableModel();
 //            model.setColumnIdentifiers(new Object[]{"Select", "Sr No", "Name"});
-             
-            modelSearch = new DefaultTableModel();   
+            modelSearch = new DefaultTableModel();
             modelSearch.setColumnIdentifiers(new Object[]{"Select", "Sr No.", "Charges Name"});
- 
+            
             selectedModel = new ArrayList<>();
             for (int i = 0; i < chargeName.size(); i++) {
-            Object chargeRow[] = new Object[3];
-            chargeRow[0] = false;
-            chargeRow[1] = i + 1;
-            chargeRow[2] = chargeName.get(i);
-            modelSearch.addRow(chargeRow);
-        }
-             
+                Object chargeRow[] = new Object[3];
+                chargeRow[0] = false;
+                chargeRow[1] = i + 1;
+                chargeRow[2] = chargeName.get(i);
+                modelSearch.addRow(chargeRow);
+            }
+
 //            row = new Object[chargesArr.length];
 //            for (int i = 0; i < chargesArr.length; i++) {
 //                row[0] = false;
@@ -565,44 +516,44 @@ public class First_Page extends JFrame implements ItemListener {
             searchTblWidth.getColumn(1).setPreferredWidth(30);
             searchTblWidth.getColumn(2).setPreferredWidth(800);
             
-             modelSearch.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                for (int i = 0; i < searchBox.getModel().getRowCount(); i++) {
-
-                    if ((Boolean) (searchBox.getModel().getValueAt(i, 0))) {
-                        String str = String.valueOf(searchBox.getSelectedRow() + 1);
-                        if (selectedModel.contains(str)) {
-                            selectedModel.remove(str);
-                        } else {
-                            selectedModel.add(str);
-                        }
+            modelSearch.addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    for (int i = 0; i < searchBox.getModel().getRowCount(); i++) {
+                        
+                        if ((Boolean) (searchBox.getModel().getValueAt(i, 0))) {
+                            String str = String.valueOf(searchBox.getSelectedRow() + 1);
+                            if (selectedModel.contains(str)) {
+                                selectedModel.remove(str);
+                            } else {
+                                selectedModel.add(str);
+                            }
 //                        System.out.println("selectedModel = " + selectedModel);
-                        break;
-                    } else {
-                        String str = String.valueOf(searchBox.getSelectedRow() + 1);
-                        if (selectedModel.contains(str)) {
-                            selectedModel.remove(str);
                             break;
+                        } else {
+                            String str = String.valueOf(searchBox.getSelectedRow() + 1);
+                            if (selectedModel.contains(str)) {
+                                selectedModel.remove(str);
+                                break;
+                            }
                         }
                     }
                 }
-            }
-        });
-             
+            });
+            
         }
-
+        
     }
 }
 
 class UpperCaseDocument extends PlainDocument {
-
+    
     private boolean upperCase = true;
-
+    
     public void setUpperCase(boolean flag) {
         upperCase = flag;
     }
-
+    
     public void insertString(int offset, String str, AttributeSet attSet)
             throws BadLocationException {
         if (upperCase) {
@@ -610,14 +561,14 @@ class UpperCaseDocument extends PlainDocument {
         }
         super.insertString(offset, str, attSet);
     }
-
+    
 }
 
 class charges {
-
+    
     int index;
     String names;
-
+    
     charges(int index, String names) {
         this.index = index;
         this.names = names;
